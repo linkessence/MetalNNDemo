@@ -1,0 +1,386 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7C644F7D264C086C00D57F4E /* t10k-images-idx3-ubyte.gz in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7CB0CFC0264AC24F004F3955 /* t10k-images-idx3-ubyte.gz */; };
+		7C644F7E264C086C00D57F4E /* t10k-labels-idx1-ubyte.gz in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7CB0CFBE264AC24F004F3955 /* t10k-labels-idx1-ubyte.gz */; };
+		7C644F7F264C086C00D57F4E /* train-images-idx3-ubyte.gz in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7CB0CFBF264AC24F004F3955 /* train-images-idx3-ubyte.gz */; };
+		7C644F80264C086C00D57F4E /* train-labels-idx1-ubyte.gz in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7CB0CFC1264AC24F004F3955 /* train-labels-idx1-ubyte.gz */; };
+		7C644F83264C08CA00D57F4E /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7C644F81264C08CA00D57F4E /* logger.cpp */; };
+		7C644F85264C08D800D57F4E /* logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C644F84264C08D800D57F4E /* logger.swift */; };
+		7C7EFBF0264EA6520094E5ED /* datasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7EFBEF264EA6520094E5ED /* datasource.swift */; };
+		7C7EFBF6264EA8720094E5ED /* MetalPerformanceShaders.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C7EFBF5264EA8720094E5ED /* MetalPerformanceShaders.framework */; };
+		7C7EFBF8265028280094E5ED /* optimizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C7EFBF7265028280094E5ED /* optimizer.swift */; };
+		7C9F5E77264D69250062898B /* mnist-dataset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7C9F5E76264D69250062898B /* mnist-dataset.cpp */; };
+		7C9F5E79264D7C940062898B /* mnist-model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9F5E78264D7C940062898B /* mnist-model.swift */; };
+		7CB006C2264AC18100D1B39D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB006C1264AC18100D1B39D /* main.swift */; };
+		7CB0CFC4264AC5A4004F3955 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CB0CFC3264AC596004F3955 /* libz.tbd */; };
+		7CB0CFC8264AC91A004F3955 /* zlib-bridge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7CB0CFC6264AC91A004F3955 /* zlib-bridge.cpp */; };
+		7CB0CFCC264ACDBC004F3955 /* mnist-dataset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB0CFCB264ACDBC004F3955 /* mnist-dataset.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7CB006BC264AC18100D1B39D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = data;
+			dstSubfolderSpec = 7;
+			files = (
+				7C644F7D264C086C00D57F4E /* t10k-images-idx3-ubyte.gz in CopyFiles */,
+				7C644F7E264C086C00D57F4E /* t10k-labels-idx1-ubyte.gz in CopyFiles */,
+				7C644F7F264C086C00D57F4E /* train-images-idx3-ubyte.gz in CopyFiles */,
+				7C644F80264C086C00D57F4E /* train-labels-idx1-ubyte.gz in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		7C644F81264C08CA00D57F4E /* logger.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = logger.cpp; sourceTree = "<group>"; };
+		7C644F82264C08CA00D57F4E /* logger.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = logger.hpp; sourceTree = "<group>"; };
+		7C644F84264C08D800D57F4E /* logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = logger.swift; sourceTree = "<group>"; };
+		7C7EFBEF264EA6520094E5ED /* datasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = datasource.swift; sourceTree = "<group>"; };
+		7C7EFBF1264EA76B0094E5ED /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		7C7EFBF5264EA8720094E5ED /* MetalPerformanceShaders.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalPerformanceShaders.framework; path = System/Library/Frameworks/MetalPerformanceShaders.framework; sourceTree = SDKROOT; };
+		7C7EFBF7265028280094E5ED /* optimizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = optimizer.swift; sourceTree = "<group>"; };
+		7C9F5E76264D69250062898B /* mnist-dataset.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "mnist-dataset.cpp"; sourceTree = "<group>"; };
+		7C9F5E78264D7C940062898B /* mnist-model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "mnist-model.swift"; sourceTree = "<group>"; };
+		7CB006BE264AC18100D1B39D /* MetalNNDemo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MetalNNDemo; sourceTree = BUILT_PRODUCTS_DIR; };
+		7CB006C1264AC18100D1B39D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		7CB0CFBE264AC24F004F3955 /* t10k-labels-idx1-ubyte.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = "t10k-labels-idx1-ubyte.gz"; sourceTree = "<group>"; };
+		7CB0CFBF264AC24F004F3955 /* train-images-idx3-ubyte.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = "train-images-idx3-ubyte.gz"; sourceTree = "<group>"; };
+		7CB0CFC0264AC24F004F3955 /* t10k-images-idx3-ubyte.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = "t10k-images-idx3-ubyte.gz"; sourceTree = "<group>"; };
+		7CB0CFC1264AC24F004F3955 /* train-labels-idx1-ubyte.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = "train-labels-idx1-ubyte.gz"; sourceTree = "<group>"; };
+		7CB0CFC3264AC596004F3955 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		7CB0CFC6264AC91A004F3955 /* zlib-bridge.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "zlib-bridge.cpp"; sourceTree = "<group>"; };
+		7CB0CFC7264AC91A004F3955 /* zlib-bridge.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "zlib-bridge.hpp"; sourceTree = "<group>"; };
+		7CB0CFCA264ACAB7004F3955 /* MetalNNDemo-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MetalNNDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		7CB0CFCB264ACDBC004F3955 /* mnist-dataset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "mnist-dataset.swift"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7CB006BB264AC18100D1B39D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7C7EFBF6264EA8720094E5ED /* MetalPerformanceShaders.framework in Frameworks */,
+				7CB0CFC4264AC5A4004F3955 /* libz.tbd in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7CB006B5264AC18100D1B39D = {
+			isa = PBXGroup;
+			children = (
+				7CB0CFCA264ACAB7004F3955 /* MetalNNDemo-Bridging-Header.h */,
+				7CB006C0264AC18100D1B39D /* MetalNNDemo */,
+				7CB006BF264AC18100D1B39D /* Products */,
+				7CB0CFC2264AC596004F3955 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		7CB006BF264AC18100D1B39D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7CB006BE264AC18100D1B39D /* MetalNNDemo */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7CB006C0264AC18100D1B39D /* MetalNNDemo */ = {
+			isa = PBXGroup;
+			children = (
+				7CB0CFBD264AC221004F3955 /* Resources */,
+				7C7EFBEF264EA6520094E5ED /* datasource.swift */,
+				7C644F81264C08CA00D57F4E /* logger.cpp */,
+				7C644F82264C08CA00D57F4E /* logger.hpp */,
+				7C644F84264C08D800D57F4E /* logger.swift */,
+				7CB006C1264AC18100D1B39D /* main.swift */,
+				7CB0CFCB264ACDBC004F3955 /* mnist-dataset.swift */,
+				7C9F5E76264D69250062898B /* mnist-dataset.cpp */,
+				7C9F5E78264D7C940062898B /* mnist-model.swift */,
+				7C7EFBF7265028280094E5ED /* optimizer.swift */,
+				7CB0CFC6264AC91A004F3955 /* zlib-bridge.cpp */,
+				7CB0CFC7264AC91A004F3955 /* zlib-bridge.hpp */,
+			);
+			path = MetalNNDemo;
+			sourceTree = "<group>";
+		};
+		7CB0CFBD264AC221004F3955 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				7CB0CFC0264AC24F004F3955 /* t10k-images-idx3-ubyte.gz */,
+				7CB0CFBE264AC24F004F3955 /* t10k-labels-idx1-ubyte.gz */,
+				7CB0CFBF264AC24F004F3955 /* train-images-idx3-ubyte.gz */,
+				7CB0CFC1264AC24F004F3955 /* train-labels-idx1-ubyte.gz */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		7CB0CFC2264AC596004F3955 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7C7EFBF5264EA8720094E5ED /* MetalPerformanceShaders.framework */,
+				7C7EFBF1264EA76B0094E5ED /* Metal.framework */,
+				7CB0CFC3264AC596004F3955 /* libz.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7CB006BD264AC18100D1B39D /* MetalNNDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7CB006C5264AC18100D1B39D /* Build configuration list for PBXNativeTarget "MetalNNDemo" */;
+			buildPhases = (
+				7CB006BA264AC18100D1B39D /* Sources */,
+				7CB006BB264AC18100D1B39D /* Frameworks */,
+				7CB006BC264AC18100D1B39D /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MetalNNDemo;
+			productName = MetalNNDemo;
+			productReference = 7CB006BE264AC18100D1B39D /* MetalNNDemo */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7CB006B6264AC18100D1B39D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1250;
+				LastUpgradeCheck = 1250;
+				TargetAttributes = {
+					7CB006BD264AC18100D1B39D = {
+						CreatedOnToolsVersion = 12.5;
+						LastSwiftMigration = 1250;
+					};
+				};
+			};
+			buildConfigurationList = 7CB006B9264AC18100D1B39D /* Build configuration list for PBXProject "MetalNNDemo" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 7CB006B5264AC18100D1B39D;
+			productRefGroup = 7CB006BF264AC18100D1B39D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7CB006BD264AC18100D1B39D /* MetalNNDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7CB006BA264AC18100D1B39D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7CB0CFCC264ACDBC004F3955 /* mnist-dataset.swift in Sources */,
+				7C644F85264C08D800D57F4E /* logger.swift in Sources */,
+				7C9F5E77264D69250062898B /* mnist-dataset.cpp in Sources */,
+				7CB006C2264AC18100D1B39D /* main.swift in Sources */,
+				7C7EFBF8265028280094E5ED /* optimizer.swift in Sources */,
+				7C9F5E79264D7C940062898B /* mnist-model.swift in Sources */,
+				7CB0CFC8264AC91A004F3955 /* zlib-bridge.cpp in Sources */,
+				7C7EFBF0264EA6520094E5ED /* datasource.swift in Sources */,
+				7C644F83264C08CA00D57F4E /* logger.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		7CB006C3264AC18100D1B39D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		7CB006C4264AC18100D1B39D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		7CB006C6264AC18100D1B39D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = S3ZXX54AC7;
+				ENABLE_HARDENED_RUNTIME = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MetalNNDemo-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		7CB006C7264AC18100D1B39D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = S3ZXX54AC7;
+				ENABLE_HARDENED_RUNTIME = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MetalNNDemo-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7CB006B9264AC18100D1B39D /* Build configuration list for PBXProject "MetalNNDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7CB006C3264AC18100D1B39D /* Debug */,
+				7CB006C4264AC18100D1B39D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7CB006C5264AC18100D1B39D /* Build configuration list for PBXNativeTarget "MetalNNDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7CB006C6264AC18100D1B39D /* Debug */,
+				7CB006C7264AC18100D1B39D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7CB006B6264AC18100D1B39D /* Project object */;
+}
