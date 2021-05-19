@@ -16,7 +16,8 @@ let TEST_LABELS_SET = "t10k-labels-idx1-ubyte.gz"
 
 // Configuration
 let BATCH_SIZE                      : Int     = 40
-let TRAINING_ITARATIONS             : Int     = 300
+let TRAINING_ITARATIONS             : Int     = 1000
+let TEST_SET_EVAL_INTERVAL          : Int     = 100
 
 // Initialize the logger
 initLogger()
@@ -51,7 +52,7 @@ NSLog("%@", device!.description)
 let commandQueue = device!.makeCommandQueue()
 
 if (commandQueue == nil) {
-    NSLog("Failed to make command queue")
+    NSLog("Failed to make command queue.")
     exit(2)
 }
 
@@ -60,9 +61,9 @@ let classifierGraph = MNISTClassifierGraph(device: device!,
                                            commandQueue: commandQueue!)
 
 func lossReduceSumAcrossBatch(_ imageBatch: [MPSImage]) -> Float32 {
-    var ret : Float32 = 0.0;
+    var ret : Float32 = 0.0
     for i in 0 ..< imageBatch.count {
-        let curr = imageBatch[i];
+        let curr = imageBatch[i]
         assert(curr.width * curr.height * curr.featureChannels == 1)
         
         let pointer = UnsafeMutablePointer<Float32>.allocate(capacity: MemoryLayout<Float32>.size)
@@ -71,14 +72,101 @@ func lossReduceSumAcrossBatch(_ imageBatch: [MPSImage]) -> Float32 {
                        dataLayout: .HeightxWidthxFeatureChannels,
                        imageIndex: 0)
         
+        defer {
+            pointer.deallocate()
+        }
         ret += pointer.pointee / Float32(BATCH_SIZE);
-        pointer.deallocate()
     }
     
-    return ret;
+    return ret
 }
 
-// Training
+func evaluateDigitLabels(labelBatch: [MPSImage],
+                         groundTruth: [Int],
+                         correctCount: inout Int,
+                         totalCount: inout Int) -> Float32 {
+    for i in 0 ..< labelBatch.count {
+        let label = labelBatch[i]
+        let pointer = UnsafeMutablePointer<Float32>.allocate(capacity: MemoryLayout<Float32>.size *
+                                                                label.featureChannels)
+        defer {
+            pointer.deallocate()
+        }
+        
+        label.readBytes(pointer,
+                        dataLayout: .HeightxWidthxFeatureChannels,
+                        imageIndex: 0)
+        
+        var maxValue : Float32 = -1000.0
+        var argMaxLabel : Int = -1
+        
+        for j in 0 ..< label.featureChannels {
+            let value = pointer.advanced(by: j).pointee
+            if value > maxValue {
+                maxValue = value
+                argMaxLabel = j
+            }
+        }
+        
+        if argMaxLabel == groundTruth[i] {
+            correctCount += 1
+        }
+    }
+    
+    totalCount += labelBatch.count
+    return Float(correctCount) / Float(totalCount)
+}
+
+// Evaluate the test set.
+func evaluateTestSet() {
+    // Reload data for the classifier graph
+    classifierGraph.inferenceGraph!.reloadFromDataSources()
+    
+    let numBatches = testSet.count / BATCH_SIZE
+    let semaphore = DispatchSemaphore(value: 1)
+    
+    var lastCommandBuffer : MPSCommandBuffer? = nil
+    
+    var correctCount : Int = 0
+    var totalCount : Int = 0
+    
+    for i in 0 ..< numBatches {
+        semaphore.wait()
+        let imageBatch = testSet.getTestBatchWithDevice(device: device!,
+                                                        startIndex: i * BATCH_SIZE,
+                                                        batchSize: BATCH_SIZE)
+        
+        let commandBuffer = MPSCommandBuffer(from: commandQueue!)
+        
+        let outputBatch = classifierGraph.encodeInferenceBatchToCommandBuffer(commandBuffer: commandBuffer,
+                                                                              sourceImages: imageBatch)
+        
+        commandBuffer.addCompletedHandler({commandBuffer in
+            assert (outputBatch.count == BATCH_SIZE)
+            
+            if (commandBuffer.error != nil) {
+                NSLog("Command buffer error: %@", commandBuffer.error!.localizedDescription)
+            } else {
+                let groundTruth = testSet.getTestLabelSlice(startIndex: i * BATCH_SIZE,
+                                                            batchSize: BATCH_SIZE)
+                
+                let _ = evaluateDigitLabels(labelBatch: outputBatch,
+                                            groundTruth: groundTruth,
+                                            correctCount: &correctCount,
+                                            totalCount: &totalCount)
+            }
+            semaphore.signal()
+        })
+        
+        commandBuffer.commit()
+        lastCommandBuffer = commandBuffer
+    }
+    
+    lastCommandBuffer?.waitUntilCompleted()
+    NSLog("Test set correctness: %f", Float32(correctCount) / Float32(totalCount))
+}
+
+// Training.
 
 var lastCommandBuffer : MPSCommandBuffer? = nil
 let doubleBufferingSemaphore = DispatchSemaphore(value: 1)
@@ -92,15 +180,20 @@ for i in 0 ..< TRAINING_ITARATIONS {
                                                                        lossLabelsBatch: &traingLossLabels)
     let commandBuffer = MPSCommandBuffer(from: commandQueue!)
     
-    let returnBatch = classifierGraph.encodeTrainingBatchToCommandBuffer(commandBuffer: commandBuffer,
-                                                                         sourceImages: trainingImageBatch,
-                                                                         lossStates: traingLossLabels)
+    let _ = classifierGraph.encodeTrainingBatchToCommandBuffer(commandBuffer: commandBuffer,
+                                                               sourceImages: trainingImageBatch,
+                                                               lossStates: traingLossLabels)
     
     var outputBatch : [MPSImage] = []
     
     for j in 0 ..< BATCH_SIZE {
         outputBatch.append(traingLossLabels[j].lossImage())
     }
+    
+    // Transfer data from the GPU to the CPU (will be a no-op on embedded GPUs)
+    #if os(macOS)
+    MPSImageBatchSynchronize(outputBatch, commandBuffer)
+    #endif
     
     commandBuffer.addCompletedHandler({commandBuffer in
         let traingLoss = lossReduceSumAcrossBatch(outputBatch)
@@ -111,13 +204,15 @@ for i in 0 ..< TRAINING_ITARATIONS {
         doubleBufferingSemaphore.signal()
     })
     
-    // Transfer data from GPU to CPU (will be a no-op on embedded GPUs).
-    MPSImageBatchSynchronize(returnBatch, commandBuffer);
-    // MPSImageBatchSynchronize(outputBatch, commandBuffer);
-    
     commandBuffer.commit()
-    lastCommandBuffer = commandBuffer
     
+    if (i + 1) % TEST_SET_EVAL_INTERVAL == 0 {
+        commandBuffer.waitUntilCompleted()
+        NSLog("Evaluating test set at iteration %d.", i)
+        evaluateTestSet()
+    }
+    
+    lastCommandBuffer = commandBuffer
 }
 
 lastCommandBuffer?.waitUntilCompleted()

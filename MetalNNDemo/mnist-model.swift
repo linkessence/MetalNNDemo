@@ -17,8 +17,8 @@ class MNISTClassifierGraph : NSObject {
     private let _fc1Weights : ConvDataSource
     private let _fc2Weights : ConvDataSource
     
-    private var trainingGraph : MPSNNGraph?
-    private var inferenceGraph : MPSNNGraph?
+    var trainingGraph : MPSNNGraph?
+    var inferenceGraph : MPSNNGraph?
     
     init(device : MTLDevice,
          commandQueue : MTLCommandQueue) {
@@ -166,6 +166,19 @@ class MNISTClassifierGraph : NSObject {
                                                       sourceStates: [lossStates])!
         
         MPSImageBatchSynchronize(returnImages, commandBuffer)
+        
         return returnImages
+    }
+    
+    func encodeInferenceBatchToCommandBuffer(commandBuffer: MPSCommandBuffer,
+                                             sourceImages: [MPSImage]) -> [MPSImage] {
+        let outputImages = inferenceGraph!.encodeBatch(to: commandBuffer,
+                                                       sourceImages: [sourceImages],
+                                                       sourceStates: nil)
+        
+        assert (outputImages != nil && outputImages?.count == sourceImages.count)
+        MPSImageBatchSynchronize(outputImages!, commandBuffer)
+        
+        return outputImages!
     }
 }

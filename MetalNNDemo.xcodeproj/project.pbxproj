@@ -22,6 +22,7 @@
 		7CB0CFC4264AC5A4004F3955 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CB0CFC3264AC596004F3955 /* libz.tbd */; };
 		7CB0CFC8264AC91A004F3955 /* zlib-bridge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7CB0CFC6264AC91A004F3955 /* zlib-bridge.cpp */; };
 		7CB0CFCC264ACDBC004F3955 /* mnist-dataset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB0CFCB264ACDBC004F3955 /* mnist-dataset.swift */; };
+		7CD88C6D26555F69000A6F22 /* datasource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7CD88C6C26555F69000A6F22 /* datasource.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -61,6 +62,7 @@
 		7CB0CFC7264AC91A004F3955 /* zlib-bridge.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "zlib-bridge.hpp"; sourceTree = "<group>"; };
 		7CB0CFCA264ACAB7004F3955 /* MetalNNDemo-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MetalNNDemo-Bridging-Header.h"; sourceTree = "<group>"; };
 		7CB0CFCB264ACDBC004F3955 /* mnist-dataset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "mnist-dataset.swift"; sourceTree = "<group>"; };
+		7CD88C6C26555F69000A6F22 /* datasource.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = datasource.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 			children = (
 				7CB0CFBD264AC221004F3955 /* Resources */,
 				7C7EFBEF264EA6520094E5ED /* datasource.swift */,
+				7CD88C6C26555F69000A6F22 /* datasource.cpp */,
 				7C644F81264C08CA00D57F4E /* logger.cpp */,
 				7C644F82264C08CA00D57F4E /* logger.hpp */,
 				7C644F84264C08D800D57F4E /* logger.swift */,
@@ -194,6 +197,7 @@
 			files = (
 				7CB0CFCC264ACDBC004F3955 /* mnist-dataset.swift in Sources */,
 				7C644F85264C08D800D57F4E /* logger.swift in Sources */,
+				7CD88C6D26555F69000A6F22 /* datasource.cpp in Sources */,
 				7C9F5E77264D69250062898B /* mnist-dataset.cpp in Sources */,
 				7CB006C2264AC18100D1B39D /* main.swift in Sources */,
 				7C7EFBF8265028280094E5ED /* optimizer.swift in Sources */,

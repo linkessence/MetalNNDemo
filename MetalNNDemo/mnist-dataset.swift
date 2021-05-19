@@ -75,10 +75,13 @@ class ImageSet {
             throw MnistDataSetError.readFileFailed
         }
         
+        defer {
+            labelData?.deallocate()
+        }
+        
         // Read descriptors
         if (C_readImageSetDescriptor(imageData!, imageDataSize, &self.imageSetDescriptor) == 0) {
             imageData?.deallocate()
-            labelData?.deallocate()
             NSLog("Bad image file format: %@", imageFile)
             throw MnistDataSetError.badFileFormat
         }
@@ -87,7 +90,6 @@ class ImageSet {
         
         if (C_readLabelSetDescriptor(labelData!, labelDataSize, &labelSetDescriptor) == 0) {
             imageData?.deallocate()
-            labelData?.deallocate()
             NSLog("Bad label file format: %@", labelFile)
             throw MnistDataSetError.badFileFormat
         }
@@ -103,7 +105,6 @@ class ImageSet {
         // Check if the data count matches
         if (self.imageSetDescriptor.count != labelSetDescriptor.count) {
             imageData?.deallocate()
-            labelData?.deallocate()
             self.imageSetDescriptor = ImageSetDescriptor()
             NSLog("The item count in the image set mismatches which in the label set.")
             throw MnistDataSetError.badImageCount
@@ -113,7 +114,6 @@ class ImageSet {
         if (self.imageSetDescriptor.offset + self.imageSetDescriptor.stride * self.imageSetDescriptor.count !=
                 imageDataSize) {
             imageData?.deallocate()
-            labelData?.deallocate()
             self.imageSetDescriptor = ImageSetDescriptor()
             NSLog("Bad image file size: %@", imageFile)
             throw MnistDataSetError.badFileSize
@@ -122,7 +122,6 @@ class ImageSet {
         if (labelSetDescriptor.offset + labelSetDescriptor.stride * labelSetDescriptor.count !=
                 labelDataSize) {
             imageData?.deallocate()
-            labelData?.deallocate()
             self.imageSetDescriptor = ImageSetDescriptor()
             NSLog("Bad label file size: %@", labelFile)
             throw MnistDataSetError.badFileSize
@@ -140,15 +139,12 @@ class ImageSet {
                                         by: labelSetDescriptor.offset
                                             + i * labelSetDescriptor.stride).pointee))
         }
-        
-        // Free up the label data buffer
-        labelData?.deallocate()
     }
     
     func getRandomTrainingBatchWithDevice(device: MTLDevice,
                                           batchSize: Int,
                                           lossLabelsBatch: inout [MPSCNNLossLabels]) -> [MPSImage] {
-        let imageDescriptor = MPSImageDescriptor(channelFormat: MPSImageFeatureChannelFormat.unorm8,
+        let imageDescriptor = MPSImageDescriptor(channelFormat: .unorm8,
                                                  width: self.width,
                                                  height: self.height,
                                                  featureChannels: 1,
@@ -174,8 +170,8 @@ class ImageSet {
             
             trainImage.writeBytes(
                 imageDataPointer!.advanced(by: index * stride),
-                dataLayout: .HeightxWidthxFeatureChannels
-                , imageIndex: 0)
+                dataLayout: .HeightxWidthxFeatureChannels,
+                imageIndex: 0)
             
             trainBatch.append(trainImage)
             
@@ -198,5 +194,54 @@ class ImageSet {
         }
         
         return trainBatch
+    }
+    
+    func getTestBatchWithDevice(device: MTLDevice,
+                                startIndex: Int,
+                                batchSize: Int) -> [MPSImage] {
+        let imageDescriptor = MPSImageDescriptor(channelFormat: .unorm8,
+                                                 width: self.width,
+                                                 height: self.height,
+                                                 featureChannels: 1,
+                                                 numberOfImages: 1,
+                                                 usage: .shaderRead)
+        
+        var testBatch : [MPSImage] = []
+        var batchSizeAdjusted = batchSize
+        if batchSizeAdjusted + startIndex > self.count {
+            batchSizeAdjusted = self.count - startIndex
+            if batchSizeAdjusted <= 0 {
+                return []
+            }
+        }
+        
+        // Fill data
+        for i in 0 ..< batchSizeAdjusted {
+            let index = startIndex + i
+            let testImage = MPSImage(device: device,
+                                     imageDescriptor: imageDescriptor)
+            testImage.label = "test-image-" + String(format: "%d", index)
+            
+            testImage.writeBytes(imageDataPointer!.advanced(by: index * stride),
+                                 dataLayout: .HeightxWidthxFeatureChannels,
+                                 imageIndex: 0)
+            
+            testBatch.append(testImage)
+        }
+        
+        return testBatch
+    }
+    
+    func getTestLabelSlice(startIndex: Int,
+                           batchSize: Int) -> [Int] {
+        var batchSizeAdjusted = batchSize
+        if batchSizeAdjusted + startIndex > self.count {
+            batchSizeAdjusted = self.count - startIndex
+            if batchSizeAdjusted <= 0 {
+                return []
+            }
+        }
+        
+        return Array<Int>(labels[startIndex ..< startIndex + batchSize])
     }
 }

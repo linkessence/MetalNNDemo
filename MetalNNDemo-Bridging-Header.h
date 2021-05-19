@@ -65,3 +65,8 @@ Bool C_readImageSetDescriptor(const uint8_t* data,
 Bool C_readLabelSetDescriptor(const uint8_t* data,
                               size_t dataSize,
                               struct LabelSetDescriptor* descriptor);
+
+//
+// Fill in a float 32 array by the given value.
+//
+void C_fillFloat32Array(void* buffer, float value, size_t numItems);

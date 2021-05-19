@@ -10,8 +10,11 @@ import MetalPerformanceShaders
 
 class ConvDataSource : NSObject, MPSCNNConvolutionDataSource {
     private let _descriptor : MPSCNNConvolutionDescriptor
+    private let _device : MTLDevice
     private let _label : String
     private let _dataType = MPSDataType.float32
+    private let _weightSize : Int
+    private let _biasSize : Int
     private let _weightVector : MPSVector
     private let _weightMomentumVector: MPSVector
     private let _weightVelocityVector: MPSVector
@@ -31,8 +34,9 @@ class ConvDataSource : NSObject, MPSCNNConvolutionDataSource {
          device: MTLDevice,
          commandQueue: MTLCommandQueue) {
         
-        // Label
+        // Class members
         self._label = label
+        self._device = device
         
         // Command queue
         self._commandQueue = commandQueue
@@ -47,7 +51,7 @@ class ConvDataSource : NSObject, MPSCNNConvolutionDataSource {
         _descriptor.fusedNeuronDescriptor = MPSNNNeuronDescriptor.cnnNeuronDescriptor(with: .none)
         // Allocate memory for vectors
         let weightsLength = inputFeatureChannels * kernelHeight * kernelWidth * outputFeatureChannels
-        let weightsSize = weightsLength * MemoryLayout<Float32>.size
+        _weightSize = weightsLength * MemoryLayout<Float32>.size
 
         let weightVectorDescriptor = MPSVectorDescriptor(length: weightsLength,
                                                          dataType: _dataType);
@@ -64,7 +68,7 @@ class ConvDataSource : NSObject, MPSCNNConvolutionDataSource {
         
         
         let biasLength = outputFeatureChannels
-        let biasSize = biasLength * MemoryLayout<Float32>.size
+        _biasSize = biasLength * MemoryLayout<Float32>.size
         
         let biasVectorDescriptor = MPSVectorDescriptor(length: biasLength,
                                                        dataType: _dataType);
@@ -82,13 +86,16 @@ class ConvDataSource : NSObject, MPSCNNConvolutionDataSource {
             weights: _weightVector.data,
             biases: _biasVector.data)
         
-        // Informs the GPU that the CPU has modified a section of the buffer.
-        _weightVector.data.didModifyRange(0 ..< weightsSize)
-        _biasVector.data.didModifyRange(0 ..< biasSize)
-        
         // Optimizer
         _optimizer = ConvAdamOptimizer(device: device,
                                        commandQueue: commandQueue)
+        
+        // Initialize the super class
+        super.init()
+        
+        // Initialize values
+        C_fillFloat32Array(_biasVector.data.contents(), 1.0, biasLength)
+        resetRandom()
     }
     
     func dataType() -> MPSDataType {
@@ -141,6 +148,39 @@ class ConvDataSource : NSObject, MPSCNNConvolutionDataSource {
                                   resultState: _weightsAndBiasesState)
         
         return _weightsAndBiasesState
+    }
+    
+    // Reset all vectors to random number
+    func resetRandom() {
+        let randomDesc = MPSMatrixRandomDistributionDescriptor.uniformDistributionDescriptor(withMinimum: -0.2,
+                                                                                             maximum: 0.2)
+        
+        let randomKernel = MPSMatrixRandomMTGP32(device: _device,
+                                                 destinationDataType: .float32,
+                                                 seed: 0,
+                                                 distributionDescriptor: randomDesc)
+        
+        let commandBuffer = MPSCommandBuffer(from: _commandQueue)
+        
+        randomKernel.encode(commandBuffer: commandBuffer,
+                            destinationVector: _weightVector)
+        
+        // Transfer data from the GPU to the CPU (will be a no-op on embedded GPUs)
+        #if os(macOS)
+        _weightVector.synchronize(on: commandBuffer)
+        #endif
+        
+        commandBuffer.commit()
+        commandBuffer.waitUntilCompleted()
+        
+        // Inform the GPU that the CPU has modified a section of the buffer.
+        _weightMomentumVector.data.didModifyRange(0 ..< _weightSize)
+        _weightVelocityVector.data.didModifyRange(0 ..< _weightSize)
+        _weightVector.data.didModifyRange(0 ..< _weightSize)
+        
+        _biasMomentumVector.data.didModifyRange(0 ..< _biasSize)
+        _biasVelocityVector.data.didModifyRange(0 ..< _biasSize)
+        _biasVector.data.didModifyRange(0 ..< _biasSize)
     }
 }
 
