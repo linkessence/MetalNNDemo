@@ -100,7 +100,7 @@ class MNISTClassifierGraph : NSObject {
     
     private func createNodes(isTraining: Bool) -> MPSNNFilterNode {
         let sameConvPadding = MPSNNDefaultPadding(method: [.sizeSame,
-                                                           .addRemainderToBottomRight])
+                                                           .centered])
         
         let samePoolingPadding = MPSNNDefaultPadding.forTensorflowAveragePooling()
         

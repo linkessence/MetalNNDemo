@@ -36,20 +36,20 @@ void C_registerLoggerCallback(LOGGER_CALLBACK callback);
 // Descriptor of the image set.
 //
 struct ImageSetDescriptor {
-    size_t count;           //<- number of items
-    size_t width;           //<- width of image in pixels
-    size_t height;          //<- height of image in pixels
-    size_t offset;          //<- offset of the first image in the data chunk
-    size_t stride;          //<- size of each image in bytes
+    size_t count;           ///< number of items
+    size_t width;           ///< width of image in pixels
+    size_t height;          ///< height of image in pixels
+    size_t offset;          ///< offset of the first image in the data chunk
+    size_t stride;          ///< size of each image in bytes
 };
 
 //
 // Descriptor of the label set.
 //
 struct LabelSetDescriptor {
-    size_t count;           //<- number of items
-    size_t offset;          //<- offset of the first label in the data chunk
-    size_t stride;          //<- size of each label in bytes, should be 1
+    size_t count;           ///< number of items
+    size_t offset;          ///< offset of the first label in the data chunk
+    size_t stride;          ///< size of each label in bytes, should be 1
 };
 
 //
