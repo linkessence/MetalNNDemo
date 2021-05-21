@@ -23,7 +23,7 @@ class ConvDataSource : NSObject, MPSCNNConvolutionDataSource {
     private let _biasVelocityVector: MPSVector
     private let _weightsAndBiasesState : MPSCNNConvolutionWeightsAndBiasesState
     private let _commandQueue : MTLCommandQueue
-    private let _optimizer : ConvAdamOptimizer
+    private let _optimizer : ConvSGDOptimizer
     
     init(kernelWidth: Int,
          kernelHeight: Int,
@@ -87,8 +87,7 @@ class ConvDataSource : NSObject, MPSCNNConvolutionDataSource {
             biases: _biasVector.data)
         
         // Optimizer
-        _optimizer = ConvAdamOptimizer(device: device,
-                                       commandQueue: commandQueue)
+        _optimizer = ConvSGDOptimizer(device: device)
         
         // Initialize the super class
         super.init()
@@ -143,8 +142,6 @@ class ConvDataSource : NSObject, MPSCNNConvolutionDataSource {
                                   convolutionGradientState: gradientState,
                                   convolutionSourceState: sourceState,
                                   inputMomentumVectors: [_weightMomentumVector, _biasMomentumVector],
-                                  inputVelocityVectors: [_weightVelocityVector, _biasVelocityVector],
-                                  maximumVelocityVectors: nil,
                                   resultState: _weightsAndBiasesState)
         
         return _weightsAndBiasesState

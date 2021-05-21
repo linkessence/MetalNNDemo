@@ -14,6 +14,7 @@ class MNISTClassifierGraph : NSObject {
     
     private let _conv1Weights : ConvDataSource
     private let _conv2Weights : ConvDataSource
+    private let _conv3Weights : ConvDataSource
     private let _fc1Weights : ConvDataSource
     private let _fc2Weights : ConvDataSource
     
@@ -28,7 +29,7 @@ class MNISTClassifierGraph : NSObject {
         _conv1Weights = ConvDataSource(kernelWidth: 5,
                                        kernelHeight: 5,
                                        inputFeatureChannels: 1,
-                                       outputFeatureChannels: 32,
+                                       outputFeatureChannels: 6,
                                        stride: 1,
                                        label: "conv1",
                                        device: device,
@@ -36,17 +37,26 @@ class MNISTClassifierGraph : NSObject {
         
         _conv2Weights = ConvDataSource(kernelWidth: 5,
                                        kernelHeight: 5,
-                                       inputFeatureChannels: 32,
-                                       outputFeatureChannels: 64,
+                                       inputFeatureChannels: 6,
+                                       outputFeatureChannels: 16,
                                        stride: 1,
                                        label: "conv2",
                                        device: device,
                                        commandQueue: commandQueue)
         
-        _fc1Weights = ConvDataSource(kernelWidth: 7,
-                                     kernelHeight: 7,
-                                     inputFeatureChannels: 64,
-                                     outputFeatureChannels: 1024,
+        _conv3Weights = ConvDataSource(kernelWidth: 5,
+                                       kernelHeight: 5,
+                                       inputFeatureChannels: 16,
+                                       outputFeatureChannels: 120,
+                                       stride: 1,
+                                       label: "conv2",
+                                       device: device,
+                                       commandQueue: commandQueue)
+        
+        _fc1Weights = ConvDataSource(kernelWidth: 1,
+                                     kernelHeight: 1,
+                                     inputFeatureChannels: 120,
+                                     outputFeatureChannels: 84,
                                      stride: 1,
                                      label: "fc1",
                                      device: device,
@@ -54,7 +64,7 @@ class MNISTClassifierGraph : NSObject {
         
         _fc2Weights = ConvDataSource(kernelWidth: 1,
                                      kernelHeight: 1,
-                                     inputFeatureChannels: 1024,
+                                     inputFeatureChannels: 84,
                                      outputFeatureChannels: 10,
                                      stride: 1,
                                      label: "fc2",
@@ -125,15 +135,22 @@ class MNISTClassifierGraph : NSObject {
                                              stride: 2)
         pool2Node.paddingPolicy = samePoolingPadding
         
-        let fc1Node = MPSCNNFullyConnectedNode(source: pool2Node.resultImage,
+        let conv3Node = MPSCNNConvolutionNode(source: pool2Node.resultImage,
+                                              weights: _conv3Weights)
+        conv3Node.paddingPolicy = sameConvPadding
+        
+        let relu3Node = MPSCNNNeuronReLUNode(source: conv3Node.resultImage)
+        
+        
+        let fc1Node = MPSCNNFullyConnectedNode(source: relu3Node.resultImage,
                                                weights: _fc1Weights)
         
-        let relu3Node = MPSCNNNeuronReLUNode(source: fc1Node.resultImage)
+        let relu4Node = MPSCNNNeuronReLUNode(source: fc1Node.resultImage)
         
-        var fc2InputNode : MPSNNFilterNode = relu3Node;
+        var fc2InputNode : MPSNNFilterNode = relu4Node;
         
         if (isTraining) {
-            let dropoutNode = MPSCNNDropoutNode(source: relu3Node.resultImage,
+            let dropoutNode = MPSCNNDropoutNode(source: relu4Node.resultImage,
                                                 keepProbability: 0.5,
                                                 seed: 1,
                                                 maskStrideInPixels: MTLSize(width: 1, height: 1, depth: 1))
