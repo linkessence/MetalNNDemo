@@ -87,8 +87,7 @@ class ConvDataSource : NSObject, MPSCNNConvolutionDataSource {
             biases: _biasVector.data)
         
         // Optimizer
-        _optimizer = ConvAdamOptimizer(device: device,
-                                       commandQueue: commandQueue)
+        _optimizer = ConvAdamOptimizer(device: device)
         
         // Initialize the super class
         super.init()

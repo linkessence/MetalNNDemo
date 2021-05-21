@@ -20,30 +20,25 @@ class ConvAdamOptimizer : NSObject {
     
     let updater : MPSNNOptimizerAdam
 
-    convenience init(device: MTLDevice,
-                     commandQueue: MTLCommandQueue) {
+    convenience init(device: MTLDevice) {
         self.init(learningRate: DEFAULT_LEARNING_RATE,
-                  device: device,
-                  commandQueue: commandQueue)
+                  device: device)
     }
     
     convenience init(learningRate : Float32,
-         device: MTLDevice,
-         commandQueue: MTLCommandQueue) {
+         device: MTLDevice) {
         self.init(learningRate : learningRate,
                   beta1: DEFAULT_BETA1,
                   beta2: DEFAULT_BETA2,
                   epsilon: DEFAULT_EPSILON,
-                  device : device,
-                  commandQueue: commandQueue)
+                  device : device)
     }
     
     init(learningRate: Float32,
          beta1: Float64,
          beta2: Float64,
          epsilon: Float32,
-         device: MTLDevice,
-         commandQueue: MTLCommandQueue) {
+         device: MTLDevice) {
         let desc = MPSNNOptimizerDescriptor(learningRate: learningRate,
                                             gradientRescale: DEFAULT_GRADIENT_RESCALE,
                                             regularizationType: DEFAULT_REGULARIZATION_TYPE,
